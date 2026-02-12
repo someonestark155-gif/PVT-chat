@@ -1,33 +1,24 @@
-<!-- Firebase SDK (MODERN VERSION) -->
-<script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-  import { 
-    getFirestore, 
-    collection, 
-    addDoc, 
-    onSnapshot, 
-    query, 
-    orderBy, 
-    serverTimestamp 
-  } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+<!-- Firebase SDK (Stable Version) -->
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
 
-  const firebaseConfig = {
+<script>
+  var firebaseConfig = {
     apiKey: "AIzaSyA-GttbP1ggsx00ecBW_TKLhUIMQugsb-A",
     authDomain: "pvt-chat-76fc4.firebaseapp.com",
     projectId: "pvt-chat-76fc4",
     storageBucket: "pvt-chat-76fc4.firebasestorage.app",
     messagingSenderId: "1067226039088",
-    appId: "1:1067226039088:web:7c841ede69cb245a72fef5",
-    measurementId: "G-Q71KHTJ3HY"
+    appId: "1:1067226039088:web:7c841ede69cb245a72fef5"
   };
 
-  const app = initializeApp(firebaseConfig);
-  const db = getFirestore(app);
+  firebase.initializeApp(firebaseConfig);
+  var db = firebase.firestore();
 
-  const correctPassword = "iloveyou"; // CHANGE THIS
+  var correctPassword = "iloveyou";
 
-  window.checkPassword = function () {
-    const input = document.getElementById("password").value;
+  function checkPassword() {
+    var input = document.getElementById("password").value;
     if (input === correctPassword) {
       document.getElementById("loginBox").classList.add("hidden");
       document.getElementById("chatBox").classList.remove("hidden");
@@ -35,37 +26,36 @@
     } else {
       document.getElementById("error").innerText = "Wrong secret 😢";
     }
-  };
+  }
 
-  window.sendMessage = async function () {
-    const username = document.getElementById("username").value;
-    const message = document.getElementById("messageInput").value;
+  function sendMessage() {
+    var username = document.getElementById("username").value;
+    var message = document.getElementById("messageInput").value;
 
     if (username && message) {
-      await addDoc(collection(db, "messages"), {
+      db.collection("messages").add({
         user: username,
         text: message,
-        timestamp: serverTimestamp()
+        timestamp: firebase.firestore.FieldValue.serverTimestamp()
       });
-
       document.getElementById("messageInput").value = "";
     }
-  };
+  }
 
   function loadMessages() {
-    const q = query(collection(db, "messages"), orderBy("timestamp"));
+    db.collection("messages")
+      .orderBy("timestamp")
+      .onSnapshot(function(snapshot) {
+        var messagesDiv = document.getElementById("messages");
+        messagesDiv.innerHTML = "";
 
-    onSnapshot(q, (snapshot) => {
-      const messagesDiv = document.getElementById("messages");
-      messagesDiv.innerHTML = "";
-
-      snapshot.forEach((doc) => {
-        const data = doc.data();
-        const div = document.createElement("div");
-        div.classList.add("msg");
-        div.innerHTML = "<strong>" + data.user + ":</strong> " + data.text;
-        messagesDiv.appendChild(div);
+        snapshot.forEach(function(doc) {
+          var data = doc.data();
+          var div = document.createElement("div");
+          div.classList.add("msg");
+          div.innerHTML = "<strong>" + data.user + ":</strong> " + data.text;
+          messagesDiv.appendChild(div);
+        });
       });
-    });
   }
 </script>
