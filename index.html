@@ -1,3 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>PVT Chat 🔐</title>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f2f2f2;
+      text-align: center;
+      margin: 0;
+      padding: 0;
+    }
+
+    h2 {
+      background: #222;
+      color: white;
+      padding: 15px;
+      margin: 0;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    #loginBox, #chatBox {
+      margin-top: 30px;
+    }
+
+    input {
+      padding: 8px;
+      margin: 5px;
+      width: 200px;
+    }
+
+    button {
+      padding: 8px 12px;
+      cursor: pointer;
+    }
+
+    #messages {
+      max-width: 500px;
+      margin: 20px auto;
+      text-align: left;
+    }
+
+    .msg {
+      background: white;
+      padding: 8px;
+      margin: 5px;
+      border-radius: 6px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+  </style>
+</head>
+
+<body>
+
+<h2>Private Live Chat 🔐</h2>
+
+<!-- LOGIN -->
+<div id="loginBox">
+  <input type="password" id="password" placeholder="Enter secret password">
+  <button onclick="checkPassword()">Enter</button>
+  <p id="error" style="color:red;"></p>
+</div>
+
+<!-- CHAT -->
+<div id="chatBox" class="hidden">
+  <input type="text" id="username" placeholder="Your name">
+  <input type="text" id="messageInput" placeholder="Type message">
+  <button onclick="sendMessage()">Send</button>
+
+  <div id="messages"></div>
+</div>
+
+<!-- FIREBASE SCRIPT -->
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
 import { 
@@ -11,7 +89,7 @@ import {
 } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
 const firebaseConfig = {
-  apiKey: "YOUR_KEY",
+  apiKey: "PASTE_YOUR_REAL_API_KEY_HERE",
   authDomain: "pvt-chat-76fc4.firebaseapp.com",
   projectId: "pvt-chat-76fc4",
   storageBucket: "pvt-chat-76fc4.firebasestorage.app",
@@ -67,3 +145,6 @@ function loadMessages() {
   });
 }
 </script>
+
+</body>
+</html>
